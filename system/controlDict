@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     rhoCentralFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         1;
+
+deltaT          1e-07;
+
+writeControl    adjustableRunTime;
+
+writeInterval   0.001;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+adjustTimeStep  yes;
+
+maxCo           1;
+
+maxDeltaT       1;
+
+pressArtDiff            true; //activate artificial diffusion on pressure
+convArtDiff             true; //activate artificial diffusion on convective terms
+
+ducLevelPress           0.00;
+ducLevelConv            0.05;
+epsilon                 1578; //velocity^2 / reference length  //ref_len 0.56515
+kp                      0.25;
+ku                      0.75;
+rm                      0.2;
+minfty                  0.04;
+
+functions
+{
+        writeduc
+        {
+                type                    writeObjects;
+                libs                    ( "libutilityFunctionObjects.so" );
+                objects                 ( "ducSensor" );
+                writeControl            outputTime;
+                writeInterval           1;
+        }
+}
+// ************************************************************************* //
